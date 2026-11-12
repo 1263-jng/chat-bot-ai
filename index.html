@@ -73,7 +73,47 @@ function suggest(text){input.value=text;sendMessage()}
 function handleKey(e){
 if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}
 }
-function sendMessage(){
+
+async function sendMessage(){
+  const text = input.value.trim();
+  if(!text) return;
+
+  welcome.style.display = 'none';
+  addMessage(text, 'user');
+  input.value = '';
+
+  const loading = document.createElement('div');
+  loading.className = 'message bot';
+  loading.textContent = 'Thinking...';
+  messages.appendChild(loading);
+
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ message: text })
+    });
+
+    const data = await response.json();
+    loading.remove();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'AI connection failed.');
+    }
+
+    addMessage(data.reply || 'No response received.', 'bot');
+
+  } catch (error) {
+    loading.remove();
+    addMessage(
+      'Sorry, I could not connect to the AI. Please try again.',
+      'bot'
+    );
+  }
+}
+
 const text=input.value.trim();
 if(!text)return;
 welcome.style.display='none';
