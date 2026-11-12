@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101116">
+<title>Chat Bot AI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101116;color:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif}
+header{height:65px;border-bottom:1px solid #292b34;display:flex;align-items:center;padding:0 18px;gap:12px}
+.logo{background:#7657e8;border-radius:12px;padding:9px;font-weight:bold}
+header h2{font-size:19px;margin:0}
+header span{color:#a7a7b2;font-size:12px}
+main{max-width:850px;margin:auto;padding:20px 16px 110px}
+.welcome{text-align:center;margin:100px 0 40px}
+.welcome h1{font-size:32px;margin-bottom:10px}
+.welcome p{color:#a7a7b2}
+#messages{display:flex;flex-direction:column;gap:18px}
+.message{padding:14px 17px;border-radius:17px;max-width:88%;line-height:1.55;white-space:pre-wrap}
+.user{background:#7657e8;align-self:flex-end}
+.bot{background:#22242d;align-self:flex-start}
+.suggestions{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-top:25px}
+.suggestions button{background:#1e2029;color:#eee;border:1px solid #363846;border-radius:20px;padding:11px 14px}
+.composer{position:fixed;bottom:0;left:0;right:0;background:#101116;padding:14px 15px 24px;border-top:1px solid #292b34}
+.inputwrap{max-width:820px;margin:auto;display:flex;gap:9px;background:#22242d;padding:8px;border:1px solid #3b3d49;border-radius:17px}
+textarea{background:transparent;color:white;border:0;outline:0;resize:none;flex:1;padding:12px;font:16px Arial;max-height:120px}
+.send{background:#7657e8;color:white;border:0;border-radius:12px;padding:0 18px;font-size:17px}
+.note{text-align:center;color:#858592;font-size:11px;margin-top:9px}
+.newchat{margin-left:auto;background:#22242d;color:white;border:1px solid #393b46;border-radius:10px;padding:9px}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">AI</div>
+<div><h2>Chat Bot AI</h2><span>Your AI assistant</span></div>
+<button class="newchat" onclick="newChat()">＋ New chat</button>
+</header>
+<main>
+<div class="welcome" id="welcome">
+<h1>What can I help with?</h1>
+<p>Ask anything. Let's figure it out together.</p>
+<div class="suggestions">
+<button onclick="suggest('Explain something difficult simply')">Explain something</button>
+<button onclick="suggest('Help me brainstorm ideas')">Brainstorm ideas</button>
+<button onclick="suggest('Help me write something')">Help me write</button>
+<button onclick="suggest('Teach me something interesting')">Teach me something</button>
+</div>
+</div>
+<div id="messages"></div>
+</main>
+<div class="composer">
+<div class="inputwrap">
+<textarea id="prompt" rows="1" placeholder="Message Chat Bot AI..." onkeydown="handleKey(event)"></textarea>
+<button class="send" onclick="sendMessage()">↑</button>
+</div>
+<div class="note">Chat Bot AI · Preview version</div>
+</div>
+<script>
+const messages=document.getElementById('messages');
+const welcome=document.getElementById('welcome');
+const input=document.getElementById('prompt');
+
+function addMessage(text,type){
+const div=document.createElement('div');
+div.className='message '+type;
+div.textContent=text;
+messages.appendChild(div);
+window.scrollTo(0,document.body.scrollHeight);
+}
+function suggest(text){input.value=text;sendMessage()}
+function handleKey(e){
+if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}
+}
+function sendMessage(){
+const text=input.value.trim();
+if(!text)return;
+welcome.style.display='none';
+addMessage(text,'user');
+input.value='';
+const reply="Thanks for your message! The Chat Bot AI interface is working. The live AI connection is the next step.";
+setTimeout(()=>addMessage(reply,'bot'),400);
+}
+function newChat(){
+messages.innerHTML='';
+welcome.style.display='block';
+input.value='';
+}
+</script>
+</body>
+</html>
